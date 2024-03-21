@@ -52,6 +52,13 @@ services:
     command: ["tritonserver", "--gpus=1", "--model-repository=/models"]
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
   
 volumes:
   minio_data:
