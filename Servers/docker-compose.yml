@@ -53,3 +53,11 @@ services:
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
   
+volumes:
+  minio_data:
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
