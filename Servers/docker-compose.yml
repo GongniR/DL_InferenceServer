@@ -25,21 +25,15 @@ services:
     
   create_buckets:
     image: minio/mc
-    container_name: S3_create_buckets
     depends_on:
-      - s3
-    networks:
-      - backend
+      - minio
     entrypoint: >
-      /bin/sh -c '
-      sleep 5;
-      /usr/bin/mc config host add s3 http://s3:${MINIO_PORT} ${MINIO_ACCESS_KEY} ${MINIO_SECRET_ACCESS_KEY} --api S3v4;
-      [[ ! -z "`/usr/bin/mc ls s3 | grep challenge`" ]] || /usr/bin/mc mb s3/${S3_BUCKET_NAME};
-      /usr/bin/mc policy download s3/${S3_BUCKET_NAME};
-      [[ ! -z "`/usr/bin/mc ls s3 | grep challenge`" ]] || /usr/bin/mc mb s3/${DATA_REPO_BUCKET_NAME};
-      /usr/bin/mc policy download s3/${DATA_REPO_BUCKET_NAME};
+      /bin/sh -c "
+      /usr/bin/mc alias set myminio http://minio:9000 minio minio123;
+      /usr/bin/mc mb myminio/somebucketname;
+      /usr/bin/mc policy set public myminio/somebucketname;
       exit 0;
-      '
+      "
       
   triton_server:
     image: nvcr.io/nvidia/tritonserver:23.12-py3
