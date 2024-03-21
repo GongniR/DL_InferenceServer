@@ -49,7 +49,7 @@ services:
       - "8002:8002"
     volumes:
       - /home/auser/model_repository:/models
-    command: ["tritonserver", "--model-repository=/models"]
+    command: ["tritonserver", "--rm", "--gpus=1","--model-repository=/models"]
     environment:
       - NVIDIA_VISIBLE_DEVICES=all
   
