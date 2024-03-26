@@ -30,9 +30,10 @@ services:
     entrypoint: >
       /bin/sh -c '
       sleep 5;
-      /usr/bin/mc config host add s3 http://s3:9000 minio minio123;
-      /usr/bin/mc mb s3/NIFTY_BUCKET;
-      /usr/bin/mc policy download s3/NIFTY_BUCKET;
+      /usr/bin/local/mc --version
+      /usr/bin/local/mc config host add s3 http://s3:9000 minio minio123;
+      /usr/bin/local/mc mb s3/NIFTY_BUCKET;
+      /usr/bin/local/mc policy download s3/NIFTY_BUCKET;
       
       exit 0;
       '
