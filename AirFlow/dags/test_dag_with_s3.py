@@ -7,10 +7,11 @@ from airflow.decorators import dag, task
 from airflow.providers.amazon.aws.hooks.s3 import S3Hook
 
 @dag(
+    'test',
     schedule=None,
     start_date=pendulum.datetime(2023, 4, 4, tz="UTC"),
     catchup=False,
-    tags=["example"],
+    tags=["JOJO"],
 )
 def my_very_own_etl():
 
