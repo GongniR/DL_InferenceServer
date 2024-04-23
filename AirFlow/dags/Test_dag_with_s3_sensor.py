@@ -50,8 +50,8 @@ download_task = PythonOperator(
 
 check_s3_bucket_sensor = S3KeySensor(
     task_id='check_s3_nii_file',
+    bucket_key = "18h.gif",
     bucket_name='niftytest',  # Specify your S3 bucket name
-    bucket_key='',  # Specify the prefix if needed
     timeout=18 * 60 * 60,  # Timeout in seconds (18 hours)
     poke_interval=10,  # Check interval in seconds
     aws_conn_id='S3_ETL_CONN',  # Connection ID to AWS
