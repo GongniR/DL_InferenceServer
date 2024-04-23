@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.dummy_operator import DummyOperator
 from airflow.operators.python_operator import PythonOperator
-from airflow.contrib.sensors.aws_s3_prefix_sensor import S3PrefixSensor
+from airflow.sensors.s3_key_sensor import S3KeySensor
 from airflow.hooks.S3_hook import S3Hook
 import os
 
@@ -15,6 +15,8 @@ default_args = {
     'retries': 1,
     'retry_delay': timedelta( minutes=1),
 }
+
+
 
 dag = DAG(
     's3_bucket_check_and_download',
@@ -46,15 +48,16 @@ download_task = PythonOperator(
     dag=dag,
 )
 
-# Sensor to check for the presence of files in S3 bucket
-check_s3_bucket_sensor = S3PrefixSensor(
-    task_id='check_s3_bucket',
+check_s3_nii_file_sensor = S3KeySensor(
+    task_id='check_s3_nii_file',
     bucket_name='niftytest',  # Specify your S3 bucket name
-    prefix='',  # Monitor the whole bucket
+    bucket_key=None,  # Specify the prefix if needed
+    wildcard_match=True,  # Enable wildcard matching for .nii files
     timeout=18 * 60 * 60,  # Timeout in seconds (18 hours)
     poke_interval=60,  # Check interval in seconds
     aws_conn_id='S3_ETL_CONN',  # Connection ID to AWS
     dag=dag,
 )
+
 
 start_task >> check_s3_bucket_sensor >> download_task >> end_task
