@@ -48,7 +48,7 @@ download_task = PythonOperator(
     dag=dag,
 )
 
-check_s3_nii_file_sensor = S3KeySensor(
+check_s3_bucket_sensor = S3KeySensor(
     task_id='check_s3_nii_file',
     bucket_name='niftytest',  # Specify your S3 bucket name
     bucket_key=None,  # Specify the prefix if needed
